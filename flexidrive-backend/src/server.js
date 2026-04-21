@@ -2,17 +2,45 @@ const express = require('express');
 const cors = require('cors');
 const helmet = require('helmet');
 const morgan = require('morgan');
+const supabase = require('./config/supabase');
+const authRoutes = require('./routes/authRoutes');
 require('dotenv').config();
 
 const app = express();
 
-// Middlewares
-app.use(helmet());
-app.use(cors());
-app.use(morgan('dev'));
-app.use(express.json());
+// --- Middlewares ---
+app.use(helmet()); // Seguridad de cabeceras HTTP
+app.use(cors());   // Permite que el frontend se comunique con el backend
+app.use(morgan('dev')); // Registro de peticiones en consola
+app.use(express.json()); // Permite leer cuerpos JSON en las peticiones
 
-// Ruta de prueba
+// --- Rutas de la API ---
+app.use('/api/auth', authRoutes); // Todas las rutas de auth empezarán por /api/auth
+
+// Ruta de prueba de conexión (la mantenemos por ahora)
+app.get('/test-db', async (req, res) => {
+  try {
+    const { data, error } = await supabase
+      .from('users')
+      .select('*')
+      .limit(1);
+
+    if (error) throw error;
+
+    res.json({
+      status: 'Conexión exitosa',
+      message: 'Hemos podido conectar con Supabase',
+      data: data
+    });
+  } catch (error) {
+    res.status(500).json({
+      status: 'Error de conexión',
+      message: error.message
+    });
+  }
+});
+
+// Ruta base de bienvenida
 app.get('/', (req, res) => {
   res.json({ message: 'Bienvenido a la API de FlexiDrive SL' });
 });

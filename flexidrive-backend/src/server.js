@@ -4,6 +4,7 @@ const helmet = require('helmet');
 const morgan = require('morgan');
 const supabase = require('./config/supabase');
 const authRoutes = require('./routes/authRoutes');
+const userRoutes = require('./routes/userRoutes');
 require('dotenv').config();
 
 const app = express();
@@ -16,7 +17,7 @@ app.use(express.json()); // Permite leer cuerpos JSON en las peticiones
 
 // --- Rutas de la API ---
 app.use('/api/auth', authRoutes); // Todas las rutas de auth empezarán por /api/auth
-
+app.use('/api/users', userRoutes);
 // Ruta de prueba de conexión (la mantenemos por ahora)
 app.get('/test-db', async (req, res) => {
   try {

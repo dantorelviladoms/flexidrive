@@ -6,6 +6,8 @@ const supabase = require('./config/supabase');
 const authRoutes = require('./routes/authRoutes');
 const userRoutes = require('./routes/userRoutes');
 const vehicleRoutes = require('./routes/vehicleRoutes');
+const availabilityRoutes = require('./routes/availabilityRoutes');
+const requestRoutes = require('./routes/requestRoutes');
 require('dotenv').config();
 
 const app = express();
@@ -20,6 +22,8 @@ app.use(express.json()); // Permite leer cuerpos JSON en las peticiones
 app.use('/api/auth', authRoutes); // Todas las rutas de auth empezarán por /api/auth
 app.use('/api/users', userRoutes);
 app.use('/api/vehicles', vehicleRoutes);
+app.use('/api/availability', availabilityRoutes);
+app.use('api/requests', requestRoutes);
 // Ruta de prueba de conexión (la mantenemos por ahora)
 app.get('/test-db', async (req, res) => {
   try {

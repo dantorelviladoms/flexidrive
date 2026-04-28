@@ -8,6 +8,9 @@ const userRoutes = require('./routes/userRoutes');
 const vehicleRoutes = require('./routes/vehicleRoutes');
 const availabilityRoutes = require('./routes/availabilityRoutes');
 const requestRoutes = require('./routes/requestRoutes');
+const bookingRoutes = require('./routes/bookingRoutes');
+const notificationController = require('./controllers/notificationController');
+const authMiddleware = require('./middlewares/authMiddleware');
 require('dotenv').config();
 
 const app = express();
@@ -24,6 +27,8 @@ app.use('/api/users', userRoutes);
 app.use('/api/vehicles', vehicleRoutes);
 app.use('/api/availability', availabilityRoutes);
 app.use('api/requests', requestRoutes);
+app.use('/api/bookings', bookingRoutes);
+app.get('/api/notifications', authMiddleware, notificationController.getNotifications);
 // Ruta de prueba de conexión (la mantenemos por ahora)
 app.get('/test-db', async (req, res) => {
   try {

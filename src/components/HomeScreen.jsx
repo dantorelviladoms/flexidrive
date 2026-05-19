@@ -59,7 +59,7 @@ export default function HomeScreen({ navigate, cars, loading }) {
         </div>
         <div className="hero-car-scene">
           <div className="scene-glow" />
-          <CarMiniature size="large" />
+          <img src="/hero-bg.png" alt="FlexiDrive coche" className="hero-ai-img" />
         </div>
       </section>
 
@@ -73,11 +73,11 @@ export default function HomeScreen({ navigate, cars, loading }) {
                 value={searchLoc} onChange={e => setSearchLoc(e.target.value)} />
             </div>
             <div className="sw-divider" />
-            <div className="sw-field">
-              <label className="sw-label"><Icon name="calendar" size={12} color="#c47dff" /> Data d'inici</label>
-              <input className="sw-input" type="date"
+            <label className="sw-field sw-field-date" htmlFor="sw-date-input">
+              <span className="sw-label"><Icon name="calendar" size={12} color="#c47dff" /> Data d'inici</span>
+              <input id="sw-date-input" className="sw-input" type="date"
                 value={searchDate} onChange={e => setSearchDate(e.target.value)} />
-            </div>
+            </label>
             <div className="sw-divider" />
             <div className="sw-field">
               <label className="sw-label"><Icon name="clock" size={12} color="#c47dff" /> Hores</label>
@@ -249,39 +249,11 @@ export default function HomeScreen({ navigate, cars, loading }) {
               <button className="btn-primary" onClick={() => navigate('publish')}>Publicar el meu coche</button>
             </div>
             <div className="cta-visual">
-              <CarMiniature size="medium" />
+              <img src="/cta-car.png" alt="Publica el teu cotxe" className="cta-ai-img" />
               <div className="cta-earnings">
                 <div className="ce-label">Guanys estimats</div>
                 <div className="ce-amount">+ 350€ <span>/mes</span></div>
               </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ── APP CTA ── */}
-      <section className="app-cta-section">
-        <div className="section-inner">
-          <div className="app-cta">
-            <div className="ac-content">
-              <h2 className="ac-title">Descarrega l'app</h2>
-              <p className="ac-desc">Reserva des del mòbil, rebuda notificacions en temps real i gestiona tot des de la palma de la mà.</p>
-              <div className="ac-buttons">
-                <button className="ac-btn">
-                  <span className="ac-btn-icon"><Icon name="apple" size={18} /></span>
-                  <div><div className="ac-btn-sub">Disponible a</div><div className="ac-btn-store">App Store</div></div>
-                </button>
-                <button className="ac-btn">
-                  <span className="ac-btn-icon"><Icon name="play" size={14} color="#c47dff" /></span>
-                  <div><div className="ac-btn-sub">Disponible a</div><div className="ac-btn-store">Google Play</div></div>
-                </button>
-              </div>
-            </div>
-            <div className="ac-badge">
-              <div className="ac-qr">
-                <div className="qr-inner"><Icon name="qr" size={32} color="#c47dff" /></div>
-              </div>
-              <div className="ac-qr-label">Escaneja per baixar</div>
             </div>
           </div>
         </div>

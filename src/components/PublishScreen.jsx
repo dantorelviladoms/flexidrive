@@ -22,7 +22,7 @@ export default function PublishScreen({ showToast, navigate, onCarCreated }) {
   const [dragOver, setDragOver] = useState(false);
   const [selectedFeatures, setSelectedFeatures] = useState(['A/C', 'Bluetooth']);
   const fileInputRef = useRef(null);
-  const [form, setForm] = useState({ makeModel: '', year: '', seats: '5', fuel: 'Gasolina', transmission: 'Manual', location: '', availableFrom: '08:00', availableTo: '20:00', pricePerHour: '', minHours: '1', description: '' });
+  const [form, setForm] = useState({ makeModel: '', year: '', mileage: '', seats: '5', fuel: 'Gasolina', transmission: 'Manual', location: '', availableFrom: '08:00', availableTo: '20:00', pricePerHour: '', minHours: '1', description: '' });
 
   const set = (key) => (e) => { setForm(f => ({ ...f, [key]: e.target.value })); setErrors(err => ({ ...err, [key]: null })); };
   const toggleDay = (i) => setActiveDays(d => d.includes(i) ? d.filter(x => x !== i) : [...d, i]);
@@ -51,7 +51,7 @@ export default function PublishScreen({ showToast, navigate, onCarCreated }) {
     const parts = form.makeModel.trim().split(' ');
     setLoading(true);
     try {
-      await carsService.createCar({ make: parts[0] || '', model: parts.slice(1).join(' ') || parts[0], year: parseInt(form.year), location: form.location, city: 'Barcelona', lat: 41.3874 + (Math.random() - 0.5) * 0.04, lng: 2.1686 + (Math.random() - 0.5) * 0.06, pricePerHour: parseFloat(form.pricePerHour), seats: parseInt(form.seats), fuel: form.fuel, transmission: form.transmission, minHours: parseInt(form.minHours) || 1, description: form.description, features: selectedFeatures, availableFrom: form.availableFrom, availableTo: form.availableTo });
+      await carsService.createCar({ make: parts[0] || '', model: parts.slice(1).join(' ') || parts[0], year: parseInt(form.year), mileage: parseInt(form.mileage) || 0, location: form.location, city: 'Barcelona', lat: 41.3874 + (Math.random() - 0.5) * 0.04, lng: 2.1686 + (Math.random() - 0.5) * 0.06, pricePerHour: parseFloat(form.pricePerHour), seats: parseInt(form.seats), fuel: form.fuel, transmission: form.transmission, minHours: parseInt(form.minHours) || 1, description: form.description, features: selectedFeatures, availableFrom: form.availableFrom, availableTo: form.availableTo });
       showToast('Coche publicat correctament!');
       if (onCarCreated) onCarCreated();
       setTimeout(() => navigate('profile'), 1000);
@@ -97,10 +97,20 @@ export default function PublishScreen({ showToast, navigate, onCarCreated }) {
                 </div>
               </div>
               <div className="field-row-2">
-                <div className="field-group"><label className="field-label">Places</label><select className="field-input" value={form.seats} onChange={set('seats')}>{['2','4','5','7'].map(o => <option key={o}>{o}</option>)}</select></div>
-                <div className="field-group"><label className="field-label">Combustible</label><select className="field-input" value={form.fuel} onChange={set('fuel')}>{['Gasolina','Diésel','Eléctrico','Híbrido'].map(o => <option key={o}>{o}</option>)}</select></div>
+                <div className="field-group">
+                  <label className="field-label"><Icon name="gauge" size={11} color="#c47dff" /> Quilometratge actual (km)</label>
+                  <input className="field-input" type="number" placeholder="Ex: 45000" value={form.mileage} onChange={set('mileage')} min="0" />
+                  <span className="field-hint">Indica els km actuals del cotxe</span>
+                </div>
+                <div className="field-group">
+                  <label className="field-label">Places</label>
+                  <select className="field-input" value={form.seats} onChange={set('seats')}>{['2','4','5','7'].map(o => <option key={o}>{o}</option>)}</select>
+                </div>
               </div>
-              <div className="field-group"><label className="field-label">Canvi</label><select className="field-input" value={form.transmission} onChange={set('transmission')}>{['Manual','Automático'].map(o => <option key={o}>{o}</option>)}</select></div>
+              <div className="field-row-2">
+                <div className="field-group"><label className="field-label">Combustible</label><select className="field-input" value={form.fuel} onChange={set('fuel')}>{['Gasolina','Diésel','Eléctrico','Híbrido'].map(o => <option key={o}>{o}</option>)}</select></div>
+                <div className="field-group"><label className="field-label">Canvi</label><select className="field-input" value={form.transmission} onChange={set('transmission')}>{['Manual','Automático'].map(o => <option key={o}>{o}</option>)}</select></div>
+              </div>
               <div className="field-group">
                 <label className="field-label"><Icon name="pin" size={11} color="#c47dff" /> Ubicació del cotxe</label>
                 <input className={`field-input ${errors.location ? 'field-error' : ''}`} type="text" placeholder="Carrer, número, ciutat…" value={form.location} onChange={set('location')} />

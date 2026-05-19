@@ -137,6 +137,9 @@ const icons = {
   x: (
     <><path d="M18 6 6 18M6 6l12 12" /></>
   ),
+  gauge: (
+    <><path d="M12 2a10 10 0 1 0 10 10" /><path d="M12 12 16.5 7.5" /><circle cx="12" cy="12" r="1.5" /></>
+  ),
 };
 
 export default function Icon({ name, size = 18, color = 'currentColor', fill = 'none', strokeWidth = 2, className = '', style = {} }) {

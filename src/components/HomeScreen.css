@@ -99,7 +99,6 @@
 .stat-l { font-size: 11px; color: var(--td); text-transform: uppercase; letter-spacing: .06em; }
 .stat-sep { width: 1px; height: 32px; background: rgba(155,77,202,.25); }
 
-/* Hero car */
 .hero-car-scene {
   position: relative;
   z-index: 2;
@@ -107,14 +106,26 @@
   align-items: center;
   justify-content: center;
   height: 100%;
+  overflow: hidden;
 }
 
 .scene-glow {
   position: absolute;
-  width: 400px;
-  height: 400px;
-  background: radial-gradient(circle, rgba(155,77,202,.25) 0%, transparent 70%);
-  border-radius: 50%;
+  inset: 0;
+  background: radial-gradient(circle at center, rgba(155,77,202,.2) 0%, transparent 70%);
+  pointer-events: none;
+  z-index: 1;
+}
+
+.hero-ai-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  border-radius: 20px;
+  opacity: 0.85;
+  mask-image: linear-gradient(to left, rgba(0,0,0,1) 40%, transparent 100%);
+  -webkit-mask-image: linear-gradient(to left, rgba(0,0,0,1) 40%, transparent 100%);
 }
 
 /* Buttons */
@@ -234,6 +245,20 @@
   height: 36px;
   background: rgba(155,77,202,.2);
   flex-shrink: 0;
+}
+
+/* Date field fully clickable */
+.sw-field-date {
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  padding: 10px 16px;
+}
+.sw-field-date:hover .sw-label { color: #c47dff; }
+.sw-field-date input[type="date"] {
+  cursor: pointer;
+  width: 100%;
 }
 
 .sw-btn {
@@ -495,6 +520,15 @@
   flex-direction: column;
   align-items: center;
   gap: 20px;
+  position: relative;
+}
+
+.cta-ai-img {
+  width: 320px;
+  height: 220px;
+  object-fit: cover;
+  border-radius: 16px;
+  box-shadow: 0 12px 40px rgba(155,77,202,.35), 0 0 0 1px rgba(155,77,202,.2);
 }
 
 .cta-earnings {
@@ -586,30 +620,6 @@
 .cta-features { display: flex; gap: 16px; flex-wrap: wrap; margin-bottom: 20px; }
 .cta-features span { font-size: 13px; color: var(--td); }
 
-/* ── APP CTA ── */
-.app-cta-section { padding: 64px 0; background: var(--bg2); border-top: 1px solid var(--cb); }
-.app-cta { display: flex; align-items: center; gap: 48px; padding: 40px; background: var(--bg3); border: 1px solid var(--cb); border-radius: 20px; }
-@media (max-width: 700px) { .app-cta { flex-direction: column; gap: 24px; } }
-.ac-title { font-size: 28px; font-weight: 700; color: var(--t); margin-bottom: 10px; font-family: 'Orbitron', sans-serif; }
-.ac-desc { font-size: 14px; color: var(--td); line-height: 1.6; max-width: 440px; margin-bottom: 24px; }
-.ac-buttons { display: flex; gap: 12px; flex-wrap: wrap; }
-.ac-btn { display: flex; align-items: center; gap: 12px; padding: 12px 20px; background: var(--bg); border: 1px solid rgba(155,77,202,.3); border-radius: 10px; cursor: pointer; transition: border-color .2s; }
-.ac-btn:hover { border-color: var(--p); }
-.ac-btn-icon { font-size: 24px; }
-.ac-btn-sub { font-size: 10px; color: var(--td); text-align: left; }
-.ac-btn-store { font-size: 14px; font-weight: 700; color: var(--t); }
-.ac-badge { display: flex; flex-direction: column; align-items: center; gap: 8px; flex-shrink: 0; margin-left: auto; }
-.ac-qr { width: 80px; height: 80px; background: var(--bg); border: 1px solid var(--cb); border-radius: 10px; display: flex; align-items: center; justify-content: center; }
-.qr-inner { font-size: 12px; color: var(--td); }
-.ac-qr-label { font-size: 11px; color: var(--tm); }
-
-/* ── CC features ── */
-.cc-features { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
-.cc-feat { font-size: 10px; padding: 2px 8px; background: rgba(155,77,202,.1); border: 1px solid rgba(155,77,202,.2); border-radius: 4px; color: var(--pg); }
-.cc-top { position: absolute; top: 8px; left: 8px; background: linear-gradient(135deg,#f5c518,#e8a800); color: #000; font-size: 10px; font-weight: 800; padding: 3px 8px; border-radius: 6px; }
-.cc-rev { font-size: 11px; color: var(--tm); }
-.cc-fav { position: absolute; top: 8px; right: 8px; width: 32px; height: 32px; font-size: 14px; }
-
 /* ── Skeleton ── */
 .car-card-skeleton {
   background: var(--bg3);
@@ -618,3 +628,9 @@
   overflow: hidden;
 }
 
+/* ── CC features ── */
+.cc-features { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
+.cc-feat { font-size: 10px; padding: 2px 8px; background: rgba(155,77,202,.1); border: 1px solid rgba(155,77,202,.2); border-radius: 4px; color: var(--pg); }
+.cc-top { position: absolute; top: 8px; left: 8px; background: linear-gradient(135deg,#f5c518,#e8a800); color: #000; font-size: 10px; font-weight: 800; padding: 3px 8px; border-radius: 6px; z-index: 2; }
+.cc-rev { font-size: 11px; color: var(--tm); }
+.cc-fav { position: absolute; top: 8px; right: 8px; width: 32px; height: 32px; font-size: 14px; z-index: 2; }

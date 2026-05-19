@@ -59,6 +59,7 @@ export default function SearchScreen({ navigate, cars: initialCars, loadCars, lo
   const [cars, setCars] = useState(initialCars || []);
   const [loading, setLoading] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [viewMode, setViewMode] = useState('both'); // 'both' | 'map' | 'list'
   const debouncedQuery = useDebounce(query, 400);
 
   useEffect(() => {
@@ -139,9 +140,10 @@ export default function SearchScreen({ navigate, cars: initialCars, loadCars, lo
       </aside>
 
       <div className="search-main">
-        <div className="map-area">
+        {viewMode !== 'list' && (
+        <div className={`map-area ${viewMode === 'map' ? 'map-area-full' : ''}`}>
           <MapContainer center={mapCenter} zoom={13} style={{ width: '100%', height: '100%', borderRadius: 'inherit' }} scrollWheelZoom={true}>
-            <TileLayer attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OSM</a>' url="https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png" />
+            <TileLayer attribution='' url="https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png" />
             <MapUpdater center={mapCenter} />
             {userPos && <Marker position={userPos} icon={userIcon}><Popup><strong>La teva posició</strong></Popup></Marker>}
             {carsWithCoords.map(car => (
@@ -164,9 +166,20 @@ export default function SearchScreen({ navigate, cars: initialCars, loadCars, lo
           </MapContainer>
           <div className="map-badge">{sorted.length} cotxes disponibles</div>
         </div>
+        )}
 
         <div className="results-header">
           <span className="results-count">{loading ? <span style={{ color: 'var(--td)' }}>Cercant...</span> : <><strong>{sorted.length}</strong> cotxe{sorted.length !== 1 ? 's' : ''} trobat{sorted.length !== 1 ? 's' : ''}</>}</span>
+          <div className="view-toggle">
+            <button className={`view-btn ${viewMode === 'map' || viewMode === 'both' ? 'active' : ''}`} onClick={() => setViewMode(v => v === 'list' ? 'both' : 'map')} title="Vista mapa">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" width="14" height="14"><polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"/><line x1="8" y1="2" x2="8" y2="18"/><line x1="16" y1="6" x2="16" y2="22"/></svg>
+              Mapa
+            </button>
+            <button className={`view-btn ${viewMode === 'list' ? 'active' : ''}`} onClick={() => setViewMode('list')} title="Vista llista">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" width="14" height="14"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
+              Llista
+            </button>
+          </div>
           <div className="sort-wrap">
             <span className="sort-label">Ordenar per:</span>
             <select className="sort-select" value={sortBy} onChange={e => setSortBy(e.target.value)}>
